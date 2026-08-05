@@ -13,30 +13,32 @@ Globals:
         USERS_TABLE: !ImportValue SynkDocs-UsersTable
         AVATARS_BUCKET_NAME: synkdocs-user-avatars
 
-x-user-policies: &user-policies
-  - Statement:
-      - Effect: Allow
-        Action:
-          - dynamodb:GetItem
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-          - dynamodb:DeleteItem
-          - dynamodb:Query
-          - dynamodb:Scan
-        Resource:
-          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
-          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
-      - Effect: Allow
-        Action:
-          - s3:*
-        Resource: '*'
 
 Resources:
   GetProfileFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/userservice/functions/getProfile/index.handler
-      Policies: *user-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+                - s3:DeleteObject
+                - s3:ListBucket
+              Resource: '*'
       Events:
         GetProfileApi:
           Type: Api
@@ -48,7 +50,26 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/userservice/functions/updateProfile/index.handler
-      Policies: *user-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+                - s3:DeleteObject
+                - s3:ListBucket
+              Resource: '*'
       Events:
         UpdateProfileApi:
           Type: Api
@@ -60,7 +81,26 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/userservice/functions/uploadAvatar/index.handler
-      Policies: *user-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+                - s3:DeleteObject
+                - s3:ListBucket
+              Resource: '*'
       Events:
         UploadAvatarApi:
           Type: Api
@@ -72,7 +112,26 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/userservice/functions/deleteAccount/index.handler
-      Policies: *user-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+                - s3:DeleteObject
+                - s3:ListBucket
+              Resource: '*'
       Events:
         DeleteAccountApi:
           Type: Api

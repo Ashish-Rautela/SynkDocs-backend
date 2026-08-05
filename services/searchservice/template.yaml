@@ -12,26 +12,25 @@ Globals:
       Variables:
         DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
 
-x-search-policies: &search-policies
-  - Statement:
-      - Effect: Allow
-        Action:
-          - dynamodb:GetItem
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-          - dynamodb:DeleteItem
-          - dynamodb:Query
-          - dynamodb:Scan
-        Resource:
-          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
-          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
 
 Resources:
   SearchDocumentsFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/searchservice/functions/searchDocuments/index.handler
-      Policies: *search-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
       Events:
         SearchDocsApi:
           Type: Api
@@ -43,7 +42,19 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/searchservice/functions/recentDocuments/index.handler
-      Policies: *search-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
       Events:
         RecentDocsApi:
           Type: Api
@@ -55,7 +66,19 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/searchservice/functions/starredDocuments/index.handler
-      Policies: *search-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
       Events:
         StarredDocsApi:
           Type: Api

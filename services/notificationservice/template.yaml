@@ -13,31 +13,33 @@ Globals:
         EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
         SNS_TOPIC_ARN: !ImportValue SynkDocs-NotificationTopicArn
 
-x-notification-policies: &notification-policies
-  - Statement:
-      - Effect: Allow
-        Action:
-          - dynamodb:GetItem
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-          - dynamodb:DeleteItem
-          - dynamodb:Query
-          - dynamodb:Scan
-        Resource:
-          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
-          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
-      - Effect: Allow
-        Action:
-          - events:PutEvents
-          - sns:Publish
-        Resource: '*'
 
 Resources:
   DocumentSharedNotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/notificationservice/functions/documentShared/index.handler
-      Policies: *notification-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource: '*'
       Events:
         DocumentSharedRule:
           Type: EventBridgeRule
@@ -51,7 +53,27 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/notificationservice/functions/commentNotification/index.handler
-      Policies: *notification-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource: '*'
       Events:
         CommentAddedRule:
           Type: EventBridgeRule
@@ -65,13 +87,53 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/notificationservice/functions/mentionNotification/index.handler
-      Policies: *notification-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource: '*'
 
   SendEmailFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/notificationservice/functions/sendEmail/index.handler
-      Policies: *notification-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource: '*'
       Events:
         SnsTopicTrigger:
           Type: SNS

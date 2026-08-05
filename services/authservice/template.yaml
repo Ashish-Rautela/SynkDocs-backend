@@ -14,30 +14,29 @@ Globals:
         EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
         JWT_SECRET: synkdocs_dev_secret_key
 
-x-auth-policies: &auth-policies
-  - Statement:
-      - Effect: Allow
-        Action:
-          - dynamodb:GetItem
-          - dynamodb:PutItem
-          - dynamodb:UpdateItem
-          - dynamodb:DeleteItem
-          - dynamodb:Query
-          - dynamodb:Scan
-        Resource:
-          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
-          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
-      - Effect: Allow
-        Action:
-          - events:PutEvents
-        Resource: '*'
 
 Resources:
   RegisterFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/register/index.handler
-      Policies: *auth-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
       Events:
         RegisterApi:
           Type: Api
@@ -49,7 +48,23 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/login/index.handler
-      Policies: *auth-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
       Events:
         LoginApi:
           Type: Api
@@ -61,7 +76,23 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/logout/index.handler
-      Policies: *auth-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
       Events:
         LogoutApi:
           Type: Api
@@ -73,7 +104,23 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/refreshToken/index.handler
-      Policies: *auth-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
       Events:
         RefreshTokenApi:
           Type: Api
@@ -85,7 +132,23 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/verifyToken/index.handler
-      Policies: *auth-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
       Events:
         VerifyTokenApi:
           Type: Api
@@ -97,7 +160,23 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/health/index.handler
-      Policies: *auth-policies
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
       Events:
         HealthApi:
           Type: Api
