@@ -20,6 +20,7 @@ Globals:
         VERSIONS_TABLE: !ImportValue SynkDocs-VersionsTable
         EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
         SNAPSHOT_BUCKET_NAME: synkdocs-snapshots-bucket
+        JWT_SECRET: synkdocs_dev_secret_key
 
 
 Resources:

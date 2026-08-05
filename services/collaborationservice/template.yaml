@@ -18,6 +18,7 @@ Globals:
         CONNECTIONS_TABLE: !ImportValue SynkDocs-ConnectionsTable
         DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
         PERMISSIONS_TABLE: !ImportValue SynkDocs-PermissionsTable
+        JWT_SECRET: synkdocs_dev_secret_key
 
 
 Resources:

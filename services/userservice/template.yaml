@@ -17,6 +17,7 @@ Globals:
       Variables:
         USERS_TABLE: !ImportValue SynkDocs-UsersTable
         AVATARS_BUCKET_NAME: synkdocs-user-avatars
+        JWT_SECRET: synkdocs_dev_secret_key
 
 
 Resources:

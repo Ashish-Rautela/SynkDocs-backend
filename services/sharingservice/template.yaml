@@ -19,6 +19,7 @@ Globals:
         DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
         USERS_TABLE: !ImportValue SynkDocs-UsersTable
         EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
+        JWT_SECRET: synkdocs_dev_secret_key
 
 
 Resources:

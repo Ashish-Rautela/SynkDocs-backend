@@ -16,6 +16,7 @@ Globals:
     Environment:
       Variables:
         DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
+        JWT_SECRET: synkdocs_dev_secret_key
 
 
 Resources:
