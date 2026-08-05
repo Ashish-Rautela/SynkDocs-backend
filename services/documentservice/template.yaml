@@ -8,30 +8,6 @@ Globals:
     Timeout: 15
     MemorySize: 256
     CodeUri: ../../
-    Policies:
-      - Statement:
-          - Effect: Allow
-            Action:
-              - dynamodb:GetItem
-              - dynamodb:PutItem
-              - dynamodb:UpdateItem
-              - dynamodb:DeleteItem
-              - dynamodb:Query
-              - dynamodb:Scan
-            Resource:
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
-          - Effect: Allow
-            Action:
-              - events:PutEvents
-            Resource: '*'
-          - Effect: Allow
-            Action:
-              - s3:GetObject
-              - s3:PutObject
-              - s3:DeleteObject
-              - s3:ListBucket
-            Resource: '*'
     Environment:
       Variables:
         DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
@@ -40,11 +16,37 @@ Globals:
         EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
         SNAPSHOT_BUCKET_NAME: synkdocs-snapshots-bucket
 
+x-doc-policies: &doc-policies
+  - Statement:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource:
+          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+      - Effect: Allow
+        Action:
+          - events:PutEvents
+        Resource: '*'
+      - Effect: Allow
+        Action:
+          - s3:GetObject
+          - s3:PutObject
+          - s3:DeleteObject
+          - s3:ListBucket
+        Resource: '*'
+
 Resources:
   CreateDocumentFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/documentservice/functions/createDocument/index.handler
+      Policies: *doc-policies
       Events:
         CreateDocApi:
           Type: Api
@@ -56,6 +58,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/documentservice/functions/deleteDocument/index.handler
+      Policies: *doc-policies
       Events:
         DeleteDocApi:
           Type: Api
@@ -67,6 +70,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/documentservice/functions/renameDocument/index.handler
+      Policies: *doc-policies
       Events:
         RenameDocApi:
           Type: Api
@@ -78,6 +82,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/documentservice/functions/getDocument/index.handler
+      Policies: *doc-policies
       Events:
         GetDocApi:
           Type: Api
@@ -89,6 +94,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/documentservice/functions/listDocuments/index.handler
+      Policies: *doc-policies
       Events:
         ListDocsApi:
           Type: Api
@@ -100,6 +106,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/documentservice/functions/saveSnapshot/index.handler
+      Policies: *doc-policies
       Events:
         SaveSnapshotApi:
           Type: Api
@@ -111,6 +118,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/documentservice/functions/restoreSnapshot/index.handler
+      Policies: *doc-policies
       Events:
         RestoreSnapshotApi:
           Type: Api

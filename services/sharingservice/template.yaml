@@ -8,23 +8,6 @@ Globals:
     Timeout: 10
     MemorySize: 256
     CodeUri: ../../
-    Policies:
-      - Statement:
-          - Effect: Allow
-            Action:
-              - dynamodb:GetItem
-              - dynamodb:PutItem
-              - dynamodb:UpdateItem
-              - dynamodb:DeleteItem
-              - dynamodb:Query
-              - dynamodb:Scan
-            Resource:
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
-          - Effect: Allow
-            Action:
-              - events:PutEvents
-            Resource: '*'
     Environment:
       Variables:
         PERMISSIONS_TABLE: !ImportValue SynkDocs-PermissionsTable
@@ -32,11 +15,30 @@ Globals:
         USERS_TABLE: !ImportValue SynkDocs-UsersTable
         EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
 
+x-share-policies: &share-policies
+  - Statement:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource:
+          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+      - Effect: Allow
+        Action:
+          - events:PutEvents
+        Resource: '*'
+
 Resources:
   ShareDocumentFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/sharingservice/functions/shareDocument/index.handler
+      Policies: *share-policies
       Events:
         ShareDocApi:
           Type: Api
@@ -48,6 +50,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/sharingservice/functions/revokeAccess/index.handler
+      Policies: *share-policies
       Events:
         RevokeAccessApi:
           Type: Api
@@ -59,6 +62,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/sharingservice/functions/updatePermission/index.handler
+      Policies: *share-policies
       Events:
         UpdatePermissionApi:
           Type: Api
@@ -70,6 +74,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/sharingservice/functions/getCollaborators/index.handler
+      Policies: *share-policies
       Events:
         GetCollaboratorsApi:
           Type: Api

@@ -8,34 +8,36 @@ Globals:
     Timeout: 10
     MemorySize: 256
     CodeUri: ../../
-    Policies:
-      - Statement:
-          - Effect: Allow
-            Action:
-              - dynamodb:GetItem
-              - dynamodb:PutItem
-              - dynamodb:UpdateItem
-              - dynamodb:DeleteItem
-              - dynamodb:Query
-              - dynamodb:Scan
-            Resource:
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
-              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
-          - Effect: Allow
-            Action:
-              - events:PutEvents
-            Resource: '*'
     Environment:
       Variables:
         USERS_TABLE: !ImportValue SynkDocs-UsersTable
         EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
         JWT_SECRET: synkdocs_dev_secret_key
 
+x-auth-policies: &auth-policies
+  - Statement:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource:
+          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+          - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+      - Effect: Allow
+        Action:
+          - events:PutEvents
+        Resource: '*'
+
 Resources:
   RegisterFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/register/index.handler
+      Policies: *auth-policies
       Events:
         RegisterApi:
           Type: Api
@@ -47,6 +49,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/login/index.handler
+      Policies: *auth-policies
       Events:
         LoginApi:
           Type: Api
@@ -58,6 +61,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/logout/index.handler
+      Policies: *auth-policies
       Events:
         LogoutApi:
           Type: Api
@@ -69,6 +73,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/refreshToken/index.handler
+      Policies: *auth-policies
       Events:
         RefreshTokenApi:
           Type: Api
@@ -80,6 +85,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/verifyToken/index.handler
+      Policies: *auth-policies
       Events:
         VerifyTokenApi:
           Type: Api
@@ -91,6 +97,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: services/authservice/functions/health/index.handler
+      Policies: *auth-policies
       Events:
         HealthApi:
           Type: Api
