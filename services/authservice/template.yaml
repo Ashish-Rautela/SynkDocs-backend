@@ -8,6 +8,23 @@ Globals:
     Timeout: 10
     MemorySize: 256
     CodeUri: ../../
+    Policies:
+      - Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+              - dynamodb:Query
+              - dynamodb:Scan
+            Resource:
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+              - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+          - Effect: Allow
+            Action:
+              - events:PutEvents
+            Resource: '*'
     Environment:
       Variables:
         USERS_TABLE: !ImportValue SynkDocs-UsersTable
