@@ -3,6 +3,11 @@ Transform: AWS::Serverless-2016-10-31
 Description: Sharing Microservice SAM Template
 
 Globals:
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+      AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key'"
+      AllowOrigin: "'*'"
   Function:
     Runtime: nodejs18.x
     Timeout: 10
