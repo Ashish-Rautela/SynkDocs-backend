@@ -7,6 +7,7 @@ Globals:
     Runtime: nodejs18.x
     Timeout: 10
     MemorySize: 256
+    CodeUri: ../../
     Environment:
       Variables:
         USERS_TABLE: !ImportValue SynkDocs-UsersTable
@@ -16,8 +17,7 @@ Resources:
   GetProfileFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/getProfile/
-      Handler: index.handler
+      Handler: services/userservice/functions/getProfile/index.handler
       Events:
         GetProfileApi:
           Type: Api
@@ -28,8 +28,7 @@ Resources:
   UpdateProfileFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/updateProfile/
-      Handler: index.handler
+      Handler: services/userservice/functions/updateProfile/index.handler
       Events:
         UpdateProfileApi:
           Type: Api
@@ -40,8 +39,7 @@ Resources:
   UploadAvatarFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/uploadAvatar/
-      Handler: index.handler
+      Handler: services/userservice/functions/uploadAvatar/index.handler
       Events:
         UploadAvatarApi:
           Type: Api
@@ -52,8 +50,7 @@ Resources:
   DeleteAccountFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/deleteAccount/
-      Handler: index.handler
+      Handler: services/userservice/functions/deleteAccount/index.handler
       Events:
         DeleteAccountApi:
           Type: Api

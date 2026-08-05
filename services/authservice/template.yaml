@@ -7,6 +7,7 @@ Globals:
     Runtime: nodejs18.x
     Timeout: 10
     MemorySize: 256
+    CodeUri: ../../
     Environment:
       Variables:
         USERS_TABLE: !ImportValue SynkDocs-UsersTable
@@ -17,8 +18,7 @@ Resources:
   RegisterFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/register/
-      Handler: index.handler
+      Handler: services/authservice/functions/register/index.handler
       Events:
         RegisterApi:
           Type: Api
@@ -29,8 +29,7 @@ Resources:
   LoginFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/login/
-      Handler: index.handler
+      Handler: services/authservice/functions/login/index.handler
       Events:
         LoginApi:
           Type: Api
@@ -41,8 +40,7 @@ Resources:
   LogoutFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/logout/
-      Handler: index.handler
+      Handler: services/authservice/functions/logout/index.handler
       Events:
         LogoutApi:
           Type: Api
@@ -53,8 +51,7 @@ Resources:
   RefreshTokenFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/refreshToken/
-      Handler: index.handler
+      Handler: services/authservice/functions/refreshToken/index.handler
       Events:
         RefreshTokenApi:
           Type: Api
@@ -65,8 +62,7 @@ Resources:
   VerifyTokenFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/verifyToken/
-      Handler: index.handler
+      Handler: services/authservice/functions/verifyToken/index.handler
       Events:
         VerifyTokenApi:
           Type: Api
@@ -77,8 +73,7 @@ Resources:
   HealthFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/health/
-      Handler: index.handler
+      Handler: services/authservice/functions/health/index.handler
       Events:
         HealthApi:
           Type: Api

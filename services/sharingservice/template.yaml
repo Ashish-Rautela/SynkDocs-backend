@@ -7,6 +7,7 @@ Globals:
     Runtime: nodejs18.x
     Timeout: 10
     MemorySize: 256
+    CodeUri: ../../
     Environment:
       Variables:
         PERMISSIONS_TABLE: !ImportValue SynkDocs-PermissionsTable
@@ -18,8 +19,7 @@ Resources:
   ShareDocumentFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/shareDocument/
-      Handler: index.handler
+      Handler: services/sharingservice/functions/shareDocument/index.handler
       Events:
         ShareDocApi:
           Type: Api
@@ -30,8 +30,7 @@ Resources:
   RevokeAccessFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/revokeAccess/
-      Handler: index.handler
+      Handler: services/sharingservice/functions/revokeAccess/index.handler
       Events:
         RevokeAccessApi:
           Type: Api
@@ -42,8 +41,7 @@ Resources:
   UpdatePermissionFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/updatePermission/
-      Handler: index.handler
+      Handler: services/sharingservice/functions/updatePermission/index.handler
       Events:
         UpdatePermissionApi:
           Type: Api
@@ -54,8 +52,7 @@ Resources:
   GetCollaboratorsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/getCollaborators/
-      Handler: index.handler
+      Handler: services/sharingservice/functions/getCollaborators/index.handler
       Events:
         GetCollaboratorsApi:
           Type: Api

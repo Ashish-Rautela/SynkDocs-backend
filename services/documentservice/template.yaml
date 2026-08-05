@@ -7,6 +7,7 @@ Globals:
     Runtime: nodejs18.x
     Timeout: 15
     MemorySize: 256
+    CodeUri: ../../
     Environment:
       Variables:
         DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
@@ -19,8 +20,7 @@ Resources:
   CreateDocumentFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/createDocument/
-      Handler: index.handler
+      Handler: services/documentservice/functions/createDocument/index.handler
       Events:
         CreateDocApi:
           Type: Api
@@ -31,8 +31,7 @@ Resources:
   DeleteDocumentFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/deleteDocument/
-      Handler: index.handler
+      Handler: services/documentservice/functions/deleteDocument/index.handler
       Events:
         DeleteDocApi:
           Type: Api
@@ -43,8 +42,7 @@ Resources:
   RenameDocumentFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/renameDocument/
-      Handler: index.handler
+      Handler: services/documentservice/functions/renameDocument/index.handler
       Events:
         RenameDocApi:
           Type: Api
@@ -55,8 +53,7 @@ Resources:
   GetDocumentFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/getDocument/
-      Handler: index.handler
+      Handler: services/documentservice/functions/getDocument/index.handler
       Events:
         GetDocApi:
           Type: Api
@@ -67,8 +64,7 @@ Resources:
   ListDocumentsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/listDocuments/
-      Handler: index.handler
+      Handler: services/documentservice/functions/listDocuments/index.handler
       Events:
         ListDocsApi:
           Type: Api
@@ -79,8 +75,7 @@ Resources:
   SaveSnapshotFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/saveSnapshot/
-      Handler: index.handler
+      Handler: services/documentservice/functions/saveSnapshot/index.handler
       Events:
         SaveSnapshotApi:
           Type: Api
@@ -91,8 +86,7 @@ Resources:
   RestoreSnapshotFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/restoreSnapshot/
-      Handler: index.handler
+      Handler: services/documentservice/functions/restoreSnapshot/index.handler
       Events:
         RestoreSnapshotApi:
           Type: Api

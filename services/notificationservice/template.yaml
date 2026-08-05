@@ -7,6 +7,7 @@ Globals:
     Runtime: nodejs18.x
     Timeout: 10
     MemorySize: 256
+    CodeUri: ../../
     Environment:
       Variables:
         EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
@@ -16,8 +17,7 @@ Resources:
   DocumentSharedNotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/documentShared/
-      Handler: index.handler
+      Handler: services/notificationservice/functions/documentShared/index.handler
       Events:
         DocumentSharedRule:
           Type: EventBridgeRule
@@ -30,8 +30,7 @@ Resources:
   CommentNotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/commentNotification/
-      Handler: index.handler
+      Handler: services/notificationservice/functions/commentNotification/index.handler
       Events:
         CommentAddedRule:
           Type: EventBridgeRule
@@ -44,14 +43,12 @@ Resources:
   MentionNotificationFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/mentionNotification/
-      Handler: index.handler
+      Handler: services/notificationservice/functions/mentionNotification/index.handler
 
   SendEmailFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/sendEmail/
-      Handler: index.handler
+      Handler: services/notificationservice/functions/sendEmail/index.handler
       Events:
         SnsTopicTrigger:
           Type: SNS

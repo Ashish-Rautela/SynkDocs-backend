@@ -7,6 +7,7 @@ Globals:
     Runtime: nodejs18.x
     Timeout: 10
     MemorySize: 256
+    CodeUri: ../../
     Environment:
       Variables:
         DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
@@ -15,8 +16,7 @@ Resources:
   SearchDocumentsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/searchDocuments/
-      Handler: index.handler
+      Handler: services/searchservice/functions/searchDocuments/index.handler
       Events:
         SearchDocsApi:
           Type: Api
@@ -27,8 +27,7 @@ Resources:
   RecentDocumentsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/recentDocuments/
-      Handler: index.handler
+      Handler: services/searchservice/functions/recentDocuments/index.handler
       Events:
         RecentDocsApi:
           Type: Api
@@ -39,8 +38,7 @@ Resources:
   StarredDocumentsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/starredDocuments/
-      Handler: index.handler
+      Handler: services/searchservice/functions/starredDocuments/index.handler
       Events:
         StarredDocsApi:
           Type: Api
