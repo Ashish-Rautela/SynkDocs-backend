@@ -20,36 +20,54 @@ Resources:
 
   AuthServiceStack:
     Type: AWS::Serverless::Application
+    DependsOn:
+      - DatabaseStack
+      - EventBridgeStack
     Properties:
       Location: '../../services/authservice/template.yaml'
 
   DocumentServiceStack:
     Type: AWS::Serverless::Application
+    DependsOn:
+      - DatabaseStack
+      - EventBridgeStack
     Properties:
       Location: '../../services/documentservice/template.yaml'
 
   SharingServiceStack:
     Type: AWS::Serverless::Application
+    DependsOn:
+      - DatabaseStack
+      - EventBridgeStack
     Properties:
       Location: '../../services/sharingservice/template.yaml'
 
   UserServiceStack:
     Type: AWS::Serverless::Application
+    DependsOn:
+      - DatabaseStack
     Properties:
       Location: '../../services/userservice/template.yaml'
 
   CollaborationServiceStack:
     Type: AWS::Serverless::Application
+    DependsOn:
+      - DatabaseStack
     Properties:
       Location: '../../services/collaborationservice/template.yaml'
 
   NotificationServiceStack:
     Type: AWS::Serverless::Application
+    DependsOn:
+      - EventBridgeStack
+      - SnsStack
     Properties:
       Location: '../../services/notificationservice/template.yaml'
 
   SearchServiceStack:
     Type: AWS::Serverless::Application
+    DependsOn:
+      - DatabaseStack
     Properties:
       Location: '../../services/searchservice/template.yaml'
 

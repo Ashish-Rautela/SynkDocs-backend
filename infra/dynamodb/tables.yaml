@@ -107,11 +107,21 @@ Resources:
 Outputs:
   UsersTableName:
     Value: !Ref UsersTable
+    Export:
+      Name: SynkDocs-UsersTable
   DocumentsTableName:
     Value: !Ref DocumentsTable
+    Export:
+      Name: SynkDocs-DocumentsTable
   PermissionsTableName:
     Value: !Ref PermissionsTable
+    Export:
+      Name: SynkDocs-PermissionsTable
   VersionsTableName:
     Value: !Ref VersionsTable
+    Export:
+      Name: SynkDocs-VersionsTable
   ConnectionsTableName:
     Value: !Ref ConnectionsTable
+    Export:
+      Name: SynkDocs-ConnectionsTable

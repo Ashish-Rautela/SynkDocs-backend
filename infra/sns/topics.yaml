@@ -10,3 +10,5 @@ Resources:
 Outputs:
   TopicArn:
     Value: !Ref DocumentNotificationsTopic
+    Export:
+      Name: SynkDocs-NotificationTopicArn

@@ -10,5 +10,9 @@ Resources:
 Outputs:
   EventBusName:
     Value: !Ref SynkDocsEventBus
+    Export:
+      Name: SynkDocs-EventBusName
   EventBusArn:
     Value: !GetAtt SynkDocsEventBus.Arn
+    Export:
+      Name: SynkDocs-EventBusArn
