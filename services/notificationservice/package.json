@@ -1,0 +1,10 @@
+{
+  "name": "@synkdocs/notification-service",
+  "version": "1.0.0",
+  "description": "Notification Microservice for SynkDocs (DocumentShared, CommentNotification, MentionNotification, SendEmail)",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-sns": "^3.500.0",
+    "joi": "^17.12.0"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@synkdocs/collaboration-service",
+  "version": "1.0.0",
+  "description": "WebSocket Collaboration Microservice for SynkDocs (Connect, Disconnect, SendOperation, CursorPosition, Heartbeat, ActiveUsers)",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.500.0",
+    "joi": "^17.12.0"
+  }
+}

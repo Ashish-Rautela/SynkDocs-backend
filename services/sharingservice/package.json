@@ -1,0 +1,9 @@
+{
+  "name": "@synkdocs/sharing-service",
+  "version": "1.0.0",
+  "description": "Sharing Microservice for SynkDocs (ShareDocument, RevokeAccess, UpdatePermission, GetCollaborators)",
+  "main": "index.js",
+  "dependencies": {
+    "joi": "^17.12.0"
+  }
+}

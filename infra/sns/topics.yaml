@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SNS Topics for SynkDocs Backend Notifications
+
+Resources:
+  DocumentNotificationsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub 'SynkDocs-DocumentNotifications-${AWS::StackName}'
+
+Outputs:
+  TopicArn:
+    Value: !Ref DocumentNotificationsTopic

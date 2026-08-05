@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Collaboration WebSocket Microservice SAM Template
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 10
+    MemorySize: 256
+    Environment:
+      Variables:
+        CONNECTIONS_TABLE: !ImportValue SynkDocs-ConnectionsTable
+        DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
+        PERMISSIONS_TABLE: !ImportValue SynkDocs-PermissionsTable
+
+Resources:
+  ConnectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/connect/
+      Handler: index.handler
+
+  DisconnectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/disconnect/
+      Handler: index.handler
+
+  SendOperationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/sendOperation/
+      Handler: index.handler
+
+  CursorPositionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/cursorPosition/
+      Handler: index.handler
+
+  HeartbeatFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/heartbeat/
+      Handler: index.handler
+
+  ActiveUsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/activeUsers/
+      Handler: index.handler
+      Events:
+        ActiveUsersApi:
+          Type: Api
+          Properties:
+            Path: /documents/{id}/active-users
+            Method: get

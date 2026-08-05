@@ -1,0 +1,9 @@
+{
+  "name": "refreshtoken-function",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "joi": "^17.12.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

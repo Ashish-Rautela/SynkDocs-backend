@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SynkDocs Root Infrastructure Master Template
+
+Resources:
+  DatabaseStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: ../dynamodb/tables.yaml
+
+  EventBridgeStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: ../eventbridge/event-bus.yaml
+
+  SnsStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: ../sns/topics.yaml
+
+  AuthServiceStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: '../../services/authservice/template.yaml'
+
+  DocumentServiceStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: '../../services/documentservice/template.yaml'
+
+  SharingServiceStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: '../../services/sharingservice/template.yaml'
+
+  UserServiceStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: '../../services/userservice/template.yaml'
+
+  CollaborationServiceStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: '../../services/collaborationservice/template.yaml'
+
+  NotificationServiceStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: '../../services/notificationservice/template.yaml'
+
+  SearchServiceStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: '../../services/searchservice/template.yaml'
+
+Outputs:
+  RootStackStatus:
+    Value: "SynkDocs Master Stack Deployed Successfully"

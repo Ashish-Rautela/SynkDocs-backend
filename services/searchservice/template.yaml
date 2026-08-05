@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Search Microservice SAM Template
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 10
+    MemorySize: 256
+    Environment:
+      Variables:
+        DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
+
+Resources:
+  SearchDocumentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/searchDocuments/
+      Handler: index.handler
+      Events:
+        SearchDocsApi:
+          Type: Api
+          Properties:
+            Path: /documents/search
+            Method: get
+
+  RecentDocumentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/recentDocuments/
+      Handler: index.handler
+      Events:
+        RecentDocsApi:
+          Type: Api
+          Properties:
+            Path: /documents/recent
+            Method: get
+
+  StarredDocumentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/starredDocuments/
+      Handler: index.handler
+      Events:
+        StarredDocsApi:
+          Type: Api
+          Properties:
+            Path: /documents/starred
+            Method: get

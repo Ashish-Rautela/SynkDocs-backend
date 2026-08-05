@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Document Microservice SAM Template
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 15
+    MemorySize: 256
+    Environment:
+      Variables:
+        DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
+        PERMISSIONS_TABLE: !ImportValue SynkDocs-PermissionsTable
+        VERSIONS_TABLE: !ImportValue SynkDocs-VersionsTable
+        EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
+        SNAPSHOT_BUCKET_NAME: synkdocs-snapshots-bucket
+
+Resources:
+  CreateDocumentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/createDocument/
+      Handler: index.handler
+      Events:
+        CreateDocApi:
+          Type: Api
+          Properties:
+            Path: /documents
+            Method: post
+
+  DeleteDocumentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/deleteDocument/
+      Handler: index.handler
+      Events:
+        DeleteDocApi:
+          Type: Api
+          Properties:
+            Path: /documents/{id}
+            Method: delete
+
+  RenameDocumentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/renameDocument/
+      Handler: index.handler
+      Events:
+        RenameDocApi:
+          Type: Api
+          Properties:
+            Path: /documents/{id}
+            Method: put
+
+  GetDocumentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/getDocument/
+      Handler: index.handler
+      Events:
+        GetDocApi:
+          Type: Api
+          Properties:
+            Path: /documents/{id}
+            Method: get
+
+  ListDocumentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/listDocuments/
+      Handler: index.handler
+      Events:
+        ListDocsApi:
+          Type: Api
+          Properties:
+            Path: /documents
+            Method: get
+
+  SaveSnapshotFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/saveSnapshot/
+      Handler: index.handler
+      Events:
+        SaveSnapshotApi:
+          Type: Api
+          Properties:
+            Path: /documents/{id}/snapshot
+            Method: post
+
+  RestoreSnapshotFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/restoreSnapshot/
+      Handler: index.handler
+      Events:
+        RestoreSnapshotApi:
+          Type: Api
+          Properties:
+            Path: /documents/{id}/snapshot/restore
+            Method: post

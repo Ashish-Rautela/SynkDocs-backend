@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Notification Microservice SAM Template
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 10
+    MemorySize: 256
+    Environment:
+      Variables:
+        EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
+        SNS_TOPIC_ARN: !ImportValue SynkDocs-NotificationTopicArn
+
+Resources:
+  DocumentSharedNotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/documentShared/
+      Handler: index.handler
+      Events:
+        DocumentSharedRule:
+          Type: EventBridgeRule
+          Properties:
+            EventBusName: !ImportValue SynkDocs-EventBusName
+            Pattern:
+              detail-type:
+                - DocumentShared
+
+  CommentNotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/commentNotification/
+      Handler: index.handler
+      Events:
+        CommentAddedRule:
+          Type: EventBridgeRule
+          Properties:
+            EventBusName: !ImportValue SynkDocs-EventBusName
+            Pattern:
+              detail-type:
+                - CommentAdded
+
+  MentionNotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/mentionNotification/
+      Handler: index.handler
+
+  SendEmailFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/sendEmail/
+      Handler: index.handler
+      Events:
+        SnsTopicTrigger:
+          Type: SNS
+          Properties:
+            Topic: !ImportValue SynkDocs-NotificationTopicArn

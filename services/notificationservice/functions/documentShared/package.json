@@ -1,0 +1,9 @@
+{
+  "name": "documentshared-function",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-sns": "^3.500.0",
+    "joi": "^17.12.0"
+  }
+}

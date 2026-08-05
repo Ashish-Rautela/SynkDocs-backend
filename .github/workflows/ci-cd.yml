@@ -1,0 +1,92 @@
+name: SynkDocs Serverless CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION || 'ap-south-1' }}
+
+jobs:
+  build-and-test:
+    name: Build, Validate, and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: |
+          npm ci
+          cd shared && npm ci && cd ..
+
+      - name: Run Code Validation & Unit Tests
+        run: |
+          npm test
+
+      - name: Setup AWS SAM CLI
+        uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+
+      - name: SAM Validate Infrastructure Templates
+        run: |
+          sam validate --template infra/templates/root-template.yaml
+          sam validate --template services/authservice/template.yaml
+          sam validate --template services/documentservice/template.yaml
+          sam validate --template services/sharingservice/template.yaml
+          sam validate --template services/userservice/template.yaml
+          sam validate --template services/collaborationservice/template.yaml
+          sam validate --template services/notificationservice/template.yaml
+          sam validate --template services/searchservice/template.yaml
+
+      - name: SAM Build
+        run: |
+          sam build --template infra/templates/root-template.yaml
+
+  deploy-production:
+    name: Deploy to AWS Lambda (ap-south-1)
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup AWS SAM CLI
+        uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+
+      - name: Build and Deploy Production Serverless Stack
+        run: |
+          sam build --template infra/templates/root-template.yaml
+          sam deploy \
+            --template-file .aws-sam/build/template.yaml \
+            --stack-name synkdocs-backend-production \
+            --region ${{ env.AWS_REGION }} \
+            --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset
+
+      - name: Post-Deployment Health Verification
+        run: |
+          echo "Verifying AWS Lambda Deployment in region ${{ env.AWS_REGION }}..."
+          aws lambda list-functions --region ${{ env.AWS_REGION }} --query 'Functions[?contains(FunctionName, `SynkDocs`)].FunctionName' --output text

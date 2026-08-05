@@ -1,0 +1,9 @@
+{
+  "name": "@synkdocs/search-service",
+  "version": "1.0.0",
+  "description": "Search Microservice for SynkDocs (SearchDocuments, RecentDocuments, StarredDocuments)",
+  "main": "index.js",
+  "dependencies": {
+    "joi": "^17.12.0"
+  }
+}

@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: CloudWatch Monitoring and Dashboards for SynkDocs Serverless
+
+Resources:
+  SynkDocsDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Sub 'SynkDocs-Operations-${AWS::StackName}'
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "text",
+              "x": 0,
+              "y": 0,
+              "width": 24,
+              "height": 2,
+              "properties": {
+                "markdown": "# SynkDocs Microservices Operational Dashboard\nMonitors API Gateway, Lambda Invocations, DynamoDB Latency, and Errors."
+              }
+            }
+          ]
+        }

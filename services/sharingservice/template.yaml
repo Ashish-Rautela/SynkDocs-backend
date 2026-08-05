@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Sharing Microservice SAM Template
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 10
+    MemorySize: 256
+    Environment:
+      Variables:
+        PERMISSIONS_TABLE: !ImportValue SynkDocs-PermissionsTable
+        DOCUMENTS_TABLE: !ImportValue SynkDocs-DocumentsTable
+        USERS_TABLE: !ImportValue SynkDocs-UsersTable
+        EVENT_BUS_NAME: !ImportValue SynkDocs-EventBusName
+
+Resources:
+  ShareDocumentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/shareDocument/
+      Handler: index.handler
+      Events:
+        ShareDocApi:
+          Type: Api
+          Properties:
+            Path: /documents/share
+            Method: post
+
+  RevokeAccessFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/revokeAccess/
+      Handler: index.handler
+      Events:
+        RevokeAccessApi:
+          Type: Api
+          Properties:
+            Path: /documents/share
+            Method: delete
+
+  UpdatePermissionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/updatePermission/
+      Handler: index.handler
+      Events:
+        UpdatePermissionApi:
+          Type: Api
+          Properties:
+            Path: /documents/permission
+            Method: put
+
+  GetCollaboratorsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/getCollaborators/
+      Handler: index.handler
+      Events:
+        GetCollaboratorsApi:
+          Type: Api
+          Properties:
+            Path: /documents/{id}/collaborators
+            Method: get

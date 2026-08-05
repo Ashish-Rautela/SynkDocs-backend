@@ -1,0 +1,10 @@
+{
+  "name": "@synkdocs/document-service",
+  "version": "1.0.0",
+  "description": "Document Microservice for SynkDocs (Create, Delete, Rename, Get, List, SaveSnapshot, RestoreSnapshot)",
+  "main": "index.js",
+  "dependencies": {
+    "joi": "^17.12.0",
+    "uuid": "^9.0.1"
+  }
+}

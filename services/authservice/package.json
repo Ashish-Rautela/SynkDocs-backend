@@ -1,0 +1,11 @@
+{
+  "name": "@synkdocs/auth-service",
+  "version": "1.0.0",
+  "description": "Auth Microservice for SynkDocs (Register, Login, Logout, RefreshToken, VerifyToken)",
+  "main": "index.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "joi": "^17.12.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

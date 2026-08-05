@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: API Gateway REST Resource with Custom Domain Preparation for SynkDocs Backend Architecture
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: 'synkapi.ashishrautela.in'
+    Description: Custom domain name for SynkDocs REST API Gateway
+
+  CertificateArn:
+    Type: String
+    Default: ''
+    Description: Optional ACM Certificate ARN in ap-south-1 for synkapi.ashishrautela.in
+
+Conditions:
+  HasCustomDomainCertificate: !Not [!Equals [!Ref CertificateArn, '']]
+
+Resources:
+  RestApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'SynkDocs-RestApi-${AWS::StackName}'
+      StageName: Prod
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+
+  ApiCustomDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Condition: HasCustomDomainCertificate
+    Properties:
+      DomainName: !Ref DomainName
+      RegionalCertificateArn: !Ref CertificateArn
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  ApiBasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Condition: HasCustomDomainCertificate
+    Properties:
+      DomainName: !Ref ApiCustomDomainName
+      RestApiId: !Ref RestApiGateway
+      Stage: Prod
+
+Outputs:
+  RestApiId:
+    Value: !Ref RestApiGateway
+  RestApiStage:
+    Value: Prod
+  CustomDomainName:
+    Value: !Ref DomainName
+  ApiGatewayTargetDomainName:
+    Condition: HasCustomDomainCertificate
+    Value: !GetAtt ApiCustomDomainName.RegionalDomainName

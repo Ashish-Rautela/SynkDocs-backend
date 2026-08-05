@@ -1,0 +1,9 @@
+{
+  "name": "@synkdocs/user-service",
+  "version": "1.0.0",
+  "description": "User Microservice for SynkDocs (GetProfile, UpdateProfile, UploadAvatar, DeleteAccount)",
+  "main": "index.js",
+  "dependencies": {
+    "joi": "^17.12.0"
+  }
+}
