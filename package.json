@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
-    "sam:validate": "sam validate --template infra/templates/root-template.yaml",
-    "sam:build": "sam build --template infra/templates/root-template.yaml"
+    "sam:validate": "sam validate --template infra/templates/root-template.yaml --region ap-south-1",
+    "sam:build": "sam build --template infra/templates/root-template.yaml --region ap-south-1"
   },
   "keywords": [
     "serverless",

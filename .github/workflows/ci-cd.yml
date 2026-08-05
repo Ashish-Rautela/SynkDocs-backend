@@ -8,6 +8,7 @@ on:
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION || 'ap-south-1' }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION || 'ap-south-1' }}
 
 jobs:
   build-and-test:
@@ -40,18 +41,18 @@ jobs:
 
       - name: SAM Validate Infrastructure Templates
         run: |
-          sam validate --template infra/templates/root-template.yaml
-          sam validate --template services/authservice/template.yaml
-          sam validate --template services/documentservice/template.yaml
-          sam validate --template services/sharingservice/template.yaml
-          sam validate --template services/userservice/template.yaml
-          sam validate --template services/collaborationservice/template.yaml
-          sam validate --template services/notificationservice/template.yaml
-          sam validate --template services/searchservice/template.yaml
+          sam validate --template infra/templates/root-template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/authservice/template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/documentservice/template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/sharingservice/template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/userservice/template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/collaborationservice/template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/notificationservice/template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/searchservice/template.yaml --region ${{ env.AWS_REGION }}
 
       - name: SAM Build
         run: |
-          sam build --template infra/templates/root-template.yaml
+          sam build --template infra/templates/root-template.yaml --region ${{ env.AWS_REGION }}
 
   deploy-production:
     name: Deploy to AWS Lambda (ap-south-1)
