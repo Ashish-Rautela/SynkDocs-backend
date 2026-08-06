@@ -13,9 +13,10 @@ class ExpenseHandler {
   }
 
   async handle(event) {
-    logger.logRequest(event);
+    logger.info('Full Raw Incoming Request', { event });
     try {
       const body = JSON.parse(event.body || '{}');
+      logger.info('Parsed Request Body', { body });
       const { operation } = body;
 
       switch (operation) {
