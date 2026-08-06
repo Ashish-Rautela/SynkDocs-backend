@@ -71,6 +71,13 @@ Resources:
     Properties:
       Location: '../../services/searchservice/template.yaml'
 
+  ExpenseServiceStack:
+    Type: AWS::Serverless::Application
+    DependsOn:
+      - DatabaseStack
+    Properties:
+      Location: '../../services/expenseservice/template.yaml'
+
 Outputs:
   RootStackStatus:
     Value: "SynkDocs Master Stack Deployed Successfully"
