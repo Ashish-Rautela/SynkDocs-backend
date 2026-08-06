@@ -49,6 +49,7 @@ jobs:
           sam validate --template services/collaborationservice/template.yaml --region ${{ env.AWS_REGION }}
           sam validate --template services/notificationservice/template.yaml --region ${{ env.AWS_REGION }}
           sam validate --template services/searchservice/template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/expenseservice/template.yaml --region ${{ env.AWS_REGION }}
 
       - name: SAM Build
         run: |
