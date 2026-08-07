@@ -19,20 +19,27 @@ class ExpenseHandler {
       logger.info('Parsed Request Body', { body });
       const { operation } = body;
 
+      let response;
       switch (operation) {
         case 'LOG_EXPENSE':
-          return await this._handleLogExpense(body);
+          response = await this._handleLogExpense(body);
+          break;
         case 'GET_EXPENSES_BY_DATE_RANGE':
-          return await this._handleGetExpenses(body);
+          response = await this._handleGetExpenses(body);
+          break;
         default:
-          return ApiResponse.error(
+          response = ApiResponse.error(
             `Unknown operation: ${operation}. Supported: LOG_EXPENSE, GET_EXPENSES_BY_DATE_RANGE`,
             'INVALID_OPERATION',
             HTTP_STATUS.BAD_REQUEST
           );
       }
+      logger.info('Full Outgoing Response', { response });
+      return response;
     } catch (err) {
-      return errorMiddleware(err, logger);
+      const errResponse = errorMiddleware(err, logger);
+      logger.info('Full Error Outgoing Response', { response: errResponse });
+      return errResponse;
     }
   }
 
@@ -40,7 +47,6 @@ class ExpenseHandler {
     const validatedData = Validator.validate(logExpenseSchema, body);
     const result = await this.expenseService.logExpense(validatedData);
     const response = ApiResponse.success(result, 'Expense logged successfully', HTTP_STATUS.OK);
-    logger.logResponse(response);
     return response;
   }
 
@@ -48,7 +54,6 @@ class ExpenseHandler {
     const validatedData = Validator.validate(getExpensesSchema, body);
     const result = await this.expenseService.getExpensesByDateRange(validatedData);
     const response = ApiResponse.success(result, 'Expenses retrieved successfully', HTTP_STATUS.OK);
-    logger.logResponse(response);
     return response;
   }
 }
