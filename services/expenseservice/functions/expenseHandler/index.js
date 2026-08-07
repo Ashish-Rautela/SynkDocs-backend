@@ -9,3 +9,4 @@ const handlerInstance = new ExpenseHandler(service);
 exports.handler = async (event) => {
   return await handlerInstance.handle(event);
 };
+
