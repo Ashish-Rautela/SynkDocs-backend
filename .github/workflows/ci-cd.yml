@@ -50,6 +50,7 @@ jobs:
           sam validate --template services/notificationservice/template.yaml --region ${{ env.AWS_REGION }}
           sam validate --template services/searchservice/template.yaml --region ${{ env.AWS_REGION }}
           sam validate --template services/expenseservice/template.yaml --region ${{ env.AWS_REGION }}
+          sam validate --template services/aicallservice/template.yaml --region ${{ env.AWS_REGION }}
 
       - name: SAM Build
         run: |
@@ -87,7 +88,8 @@ jobs:
             --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
             --resolve-s3 \
             --no-confirm-changeset \
-            --no-fail-on-empty-changeset
+            --no-fail-on-empty-changeset \
+            --parameter-overrides GeminiApiKey=${{ secrets.GEMINI_API_KEY }}
 
       - name: Post-Deployment Health Verification
         run: |

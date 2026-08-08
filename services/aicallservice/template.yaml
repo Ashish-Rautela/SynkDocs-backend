@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AI Call Microservice SAM Template
+
+Parameters:
+  GeminiApiKey:
+    Type: String
+    NoEcho: true
+    Description: Gemini API Key for AI expense extraction
+
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+      AllowHeaders: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key'"
+      AllowOrigin: "'*'"
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 30
+    MemorySize: 256
+    CodeUri: ../../
+    Environment:
+      Variables:
+        GEMINI_API_KEY: !Ref GeminiApiKey
+        GEMINI_MODEL: gemini-3.5-flash-lite
+
+Resources:
+  AICallHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: services/aicallservice/functions/aiCallHandler/index.handler
+      Events:
+        AICallApi:
+          Type: Api
+          Properties:
+            Path: /extract
+            Method: post
