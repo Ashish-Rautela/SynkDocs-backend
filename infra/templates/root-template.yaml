@@ -2,11 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: SynkDocs Root Infrastructure Master Template
 
-Parameters:
-  GeminiApiKey:
-    Type: String
-    NoEcho: true
-    Description: Gemini API Key for AI expense extraction
 
 Resources:
   DatabaseStack:
@@ -88,8 +83,6 @@ Resources:
     Type: AWS::Serverless::Application
     Properties:
       Location: '../../services/aicallservice/template.yaml'
-      Parameters:
-        GeminiApiKey: !Ref GeminiApiKey
 
 Outputs:
   RootStackStatus:

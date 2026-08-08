@@ -2,12 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: AI Call Microservice SAM Template
 
-Parameters:
-  GeminiApiKey:
-    Type: String
-    NoEcho: true
-    Description: Gemini API Key for AI expense extraction
-
 Globals:
   Api:
     Cors:
@@ -21,7 +15,7 @@ Globals:
     CodeUri: ../../
     Environment:
       Variables:
-        GEMINI_API_KEY: !Ref GeminiApiKey
+        GEMINI_API_KEY: SET_IN_AWS_CONSOLE
         GEMINI_MODEL: gemini-3.5-flash-lite
 
 Resources:
