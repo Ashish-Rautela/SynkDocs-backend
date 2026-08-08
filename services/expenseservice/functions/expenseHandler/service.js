@@ -4,16 +4,16 @@ class ExpenseService {
   }
 
   async logExpense({ userPhone, expenseType, expenseMode, expenseAmount, expenseDate, description }) {
-    const timestamp = new Date(expenseDate).getTime();
+    const numericAmount = Number(expenseAmount);
     const expenseId = `EXP_${Date.now()}${Math.floor(Math.random() * 10000)}`;
 
     const item = {
       PK: `USER#${userPhone}`,
-      SK: `EXPENSE#${timestamp}#${expenseId}`,
+      SK: `EXPENSE#${expenseDate}#${expenseId}`,
       expense_id: expenseId,
       expense_type: expenseType,
       expense_mode: expenseMode,
-      expense_amount: expenseAmount,
+      expense_amount: numericAmount,
       expense_date: expenseDate,
       description: description || '',
       created_at: new Date().toISOString()
@@ -25,11 +25,14 @@ class ExpenseService {
   }
 
   async getExpensesByDateRange({ userPhone, startDate, endDate }) {
-    const startTimestamp = new Date(startDate).getTime();
-    // Set end date to end of day (23:59:59.999)
-    const endTimestamp = new Date(endDate).getTime() + 86399999;
+    const rawExpenses = await this.repository.queryByUser(userPhone);
 
-    const expenses = await this.repository.queryByDateRange(userPhone, startTimestamp, endTimestamp);
+    // Filter expenses within date range (YYYY-MM-DD string comparison)
+    const expensesInRange = rawExpenses.filter((item) => {
+      const itemDate = item.expense_date;
+      if (!itemDate) return true; // fallback if missing
+      return itemDate >= startDate && itemDate <= endDate;
+    });
 
     // Aggregate calculations
     let totalSpent = 0;
@@ -38,12 +41,13 @@ class ExpenseService {
     const categoryBreakdown = {};
     const modeBreakdown = { ONLINE: 0, CASH: 0 };
 
-    const formattedExpenses = expenses.map((item) => {
-      const amount = item.expense_amount;
+    const formattedExpenses = expensesInRange.map((item) => {
+      const amount = Number(item.expense_amount) || 0;
       totalSpent += amount;
 
       // Mode aggregation
-      if (item.expense_mode === 'ONLINE') {
+      const mode = (item.expense_mode || 'CASH').toUpperCase();
+      if (mode === 'ONLINE') {
         totalOnline += amount;
         modeBreakdown.ONLINE += amount;
       } else {
@@ -52,14 +56,14 @@ class ExpenseService {
       }
 
       // Category aggregation
-      const category = item.expense_type;
+      const category = item.expense_type || 'OTHER';
       categoryBreakdown[category] = (categoryBreakdown[category] || 0) + amount;
 
       return {
         expenseId: item.expense_id,
         expenseType: item.expense_type,
         expenseMode: item.expense_mode,
-        expenseAmount: item.expense_amount,
+        expenseAmount: amount,
         expenseDate: item.expense_date,
         description: item.description
       };

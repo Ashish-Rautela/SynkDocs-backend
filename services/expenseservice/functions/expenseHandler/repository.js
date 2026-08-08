@@ -7,18 +7,17 @@ class ExpenseRepository {
     return await DynamoClient.put(EXPENSES_TABLE, item);
   }
 
-  async queryByDateRange(userPhone, startTimestamp, endTimestamp) {
+  async queryByUser(userPhone) {
     const result = await DynamoClient.query({
       TableName: EXPENSES_TABLE,
-      KeyConditionExpression: 'PK = :pk AND SK BETWEEN :skStart AND :skEnd',
+      KeyConditionExpression: 'PK = :pk AND begins_with(SK, :skPrefix)',
       ExpressionAttributeValues: {
         ':pk': `USER#${userPhone}`,
-        ':skStart': `EXPENSE#${startTimestamp}`,
-        ':skEnd': `EXPENSE#${endTimestamp}~`
+        ':skPrefix': 'EXPENSE#'
       },
       ScanIndexForward: true
     });
-    return result.items;
+    return result.items || [];
   }
 }
 
