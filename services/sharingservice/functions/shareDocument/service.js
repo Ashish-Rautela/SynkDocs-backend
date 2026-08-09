@@ -7,7 +7,7 @@ class ShareDocumentService {
     this.repository = repository;
   }
 
-  async shareDocument(userContext, { documentId, targetUserId, role }) {
+  async shareDocument(userContext, { documentId, targetUserId, email, targetEmail, role }) {
     const doc = await this.repository.getDocument(documentId);
     if (!doc) {
       throw new NotFoundError('Document not found');
@@ -17,10 +17,29 @@ class ShareDocumentService {
       throw new ForbiddenError('Only document owner can share permissions');
     }
 
+    let resolvedTargetId = targetUserId;
+    let targetUserObj = null;
+
+    const emailToSearch = email || targetEmail || (targetUserId && targetUserId.includes('@') ? targetUserId : null);
+
+    if (emailToSearch) {
+      targetUserObj = await this.repository.findUserByEmail(emailToSearch);
+      if (!targetUserObj) {
+        throw new NotFoundError(`User with email '${emailToSearch}' not found`);
+      }
+      resolvedTargetId = targetUserObj.userId;
+    }
+
+    if (!resolvedTargetId) {
+      throw new NotFoundError('Target user could not be resolved');
+    }
+
     const timestamp = new Date().toISOString();
     const permRecord = {
       documentId,
-      userId: targetUserId,
+      userId: resolvedTargetId,
+      userEmail: targetUserObj ? targetUserObj.email : (emailToSearch || undefined),
+      userName: targetUserObj ? targetUserObj.name : undefined,
       role,
       grantedBy: userContext.userId,
       createdAt: timestamp,
@@ -32,7 +51,7 @@ class ShareDocumentService {
     // Emit DocumentShared Event
     await EventBridgeUtil.publishEvent(EVENTS.DOCUMENT_SHARED, {
       documentId,
-      targetUserId,
+      targetUserId: resolvedTargetId,
       role,
       sharedBy: userContext.userId,
       timestamp

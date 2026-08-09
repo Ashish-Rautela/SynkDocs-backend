@@ -4,6 +4,8 @@ const { ConflictError } = require('../../../../shared/errors');
 const EventBridgeUtil = require('../../../../shared/utils/eventBridgeClient');
 const { EVENTS } = require('../../../../shared/constants');
 
+const JwtHelper = require('../../../../shared/jwt/jwtHelper');
+
 class RegisterService {
   constructor(repository) {
     this.repository = repository;
@@ -41,7 +43,17 @@ class RegisterService {
     });
 
     const { passwordHash: _, ...userWithoutPassword } = newUser;
-    return userWithoutPassword;
+    const payload = { userId, email, name };
+    const accessToken = JwtHelper.generateAccessToken(payload);
+    const refreshToken = JwtHelper.generateRefreshToken(payload);
+
+    return {
+      user: userWithoutPassword,
+      tokens: {
+        accessToken,
+        refreshToken
+      }
+    };
   }
 }
 

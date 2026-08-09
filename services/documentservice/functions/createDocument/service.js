@@ -15,6 +15,7 @@ class CreateDocumentService {
       documentId,
       ownerId: userContext.userId,
       title: title || 'Untitled Document',
+      content: content || '',
       createdAt: timestamp,
       updatedAt: timestamp
     };
