@@ -31,7 +31,8 @@ class LoginService {
       user: {
         userId: user.userId,
         email: user.email,
-        name: user.name
+        name: user.name,
+        avatarUrl: user.avatarUrl
       },
       tokens: {
         accessToken,

@@ -3,7 +3,7 @@ const DynamoClient = require('../../../../shared/dynamodb/dynamoClient');
 const USERS_TABLE = process.env.USERS_TABLE || 'SynkDocs-Users';
 
 class UpdateProfileRepository {
-  async updateProfile(userId, { name, bio }, updatedAt) {
+  async updateProfile(userId, { name, bio, avatarUrl }, updatedAt) {
     let updateExpression = 'SET updatedAt = :updatedAt';
     const expressionAttributeValues = { ':updatedAt': updatedAt };
     const expressionAttributeNames = {};
@@ -17,6 +17,11 @@ class UpdateProfileRepository {
     if (bio !== undefined) {
       updateExpression += ', bio = :bio';
       expressionAttributeValues[':bio'] = bio;
+    }
+
+    if (avatarUrl !== undefined) {
+      updateExpression += ', avatarUrl = :avatarUrl';
+      expressionAttributeValues[':avatarUrl'] = avatarUrl;
     }
 
     return await DynamoClient.update({
