@@ -134,3 +134,60 @@ Resources:
           Properties:
             Path: /documents/{id}/collaborators
             Method: get
+
+  RequestAccessFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: services/sharingservice/functions/requestAccess/index.handler
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
+      Events:
+        RequestAccessApi:
+          Type: Api
+          Properties:
+            Path: /documents/request-access
+            Method: post
+
+  GetPendingRequestsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: services/sharingservice/functions/getPendingRequests/index.handler
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource:
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*'
+                - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/SynkDocs-*/index/*'
+            - Effect: Allow
+              Action:
+                - events:PutEvents
+              Resource: '*'
+      Events:
+        GetPendingRequestsApi:
+          Type: Api
+          Properties:
+            Path: /documents/pending-requests
+            Method: get
+
