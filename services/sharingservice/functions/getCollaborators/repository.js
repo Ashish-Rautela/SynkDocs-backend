@@ -13,15 +13,14 @@ class GetCollaboratorsRepository {
 
     const collaborators = await Promise.all(
       result.items.map(async (item) => {
-        if (!item.name || !item.email) {
-          const user = await DynamoClient.get(USERS_TABLE, { userId: item.userId });
-          if (user) {
-            return {
-              ...item,
-              name: user.name || item.name,
-              email: user.email || item.email
-            };
-          }
+        const user = await DynamoClient.get(USERS_TABLE, { userId: item.userId });
+        if (user) {
+          return {
+            ...item,
+            name: user.name || item.name,
+            email: user.email || item.email,
+            avatarUrl: user.avatarUrl
+          };
         }
         return item;
       })
